@@ -10,3 +10,8 @@ hellogang-*
 # OS
 .DS_Store
 Thumbs.db
+
+.vercel
+.github
+*.json
+*.txt

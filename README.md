@@ -11,8 +11,10 @@ Powered by *Cobra* and *Lipgloss*, it features a striking "Claude Orange" aesthe
 ---
 
 ## ⚡ Features
-- **Dynamic ASCII Greeting**: Generates high-quality graffiti ASCII art using your actual name.
-- **System Monitoring**: instantly view real-time CPU usage, RAM stats, and exact Date/Time.
+- **Dynamic ASCII Greeting**: Generates high-quality graffiti ASCII art using your actual name (saved during `install`).
+- **System Monitoring**: Instantly view real-time CPU usage, RAM stats, and exact Date/Time.
+- **GitHub Insights (`gs`)**: Fetch your latest 4 repositories, commits, PRs, workflow runs, and releases in a clean, interactive list.
+- **Vercel Dash (`vs`)**: Quick view of your Vercel projects and recent deployment statuses.
 - **Premium UI**: Designed with clean spacing, vibrant solid progress bars, and a sharp Claude Orange & White color palette.
 - **Cross-Platform Auto-Start**: Installs seamlessly into **PowerShell, CMD, or Bash** profiles, so the greeting appears automatically whenever you open your terminal.
 
@@ -42,6 +44,21 @@ To configure HelloGang to run automatically every time you open a terminal:
 hellogang install
 ```
 *(You will be prompted to enter your name, and HelloGang will smartly handle the rest!)*
+
+### 🔍 Add-on Commands
+HelloGang now includes powerful integrations with your favorite tools:
+
+**GitHub Stats:**
+```bash
+hellogang gs
+```
+*Note: Requires [GitHub CLI](https://cli.github.com/) installed and logged in.*
+
+**Vercel Stats:**
+```bash
+hellogang vs
+```
+*Note: Requires [Vercel CLI](https://vercel.com/docs/cli) installed and logged in.*
 
 To safely remove the startup integration later:
 ```bash
