@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="preview.png" alt="HelloGang Preview" width="100%">
+  <img src="https://github.com/user-attachments/assets/db44efe6-c75a-4790-8ba1-39632e99b13a" alt="HelloGang Preview" width="100%">
 </div>
 
 # ✨ HelloGang CLI
