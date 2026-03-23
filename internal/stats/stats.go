@@ -25,8 +25,8 @@ func GetStats() (*SystemStats, error) {
 	// Get current date/time
 	now := time.Now()
 
-	// Get CPU usage (blocking call for accurate measurement)
-	cpuPercents, err := cpu.Percent(time.Second, false)
+	// Get CPU usage (0 for instant, non-blocking measurement)
+	cpuPercents, err := cpu.Percent(0, false)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get CPU stats: %w", err)
 	}

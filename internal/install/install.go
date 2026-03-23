@@ -256,8 +256,7 @@ func uninstallPowerShell(opts InstallOptions) error {
 		return fmt.Errorf("failed to read profile: %w", err)
 	}
 
-	commandLine := fmt.Sprintf("& '%s'", opts.ExecPath)
-	newContent := removeLines(string(content), commandLine)
+	newContent := removeLines(string(content), "hellogang")
 
 	if string(content) == newContent {
 		fmt.Println("ℹ️  HelloGang was not found in PowerShell profile.")
@@ -287,8 +286,7 @@ func uninstallCMD(opts InstallOptions) error {
 		return nil
 	}
 
-	commandLine := fmt.Sprintf(`"%s"`, opts.ExecPath)
-	newValue := removeCommand(existing, commandLine)
+	newValue := removeCommand(existing, "hellogang")
 
 	if newValue == "" {
 		if err := key.DeleteValue("AutoRun"); err != nil {
@@ -317,8 +315,7 @@ func uninstallBash(opts InstallOptions) error {
 		return fmt.Errorf("failed to read .bashrc: %w", err)
 	}
 
-	commandLine := fmt.Sprintf(`'%s'`, opts.ExecPath)
-	newContent := removeLines(string(content), commandLine)
+	newContent := removeLines(string(content), "hellogang")
 
 	if string(content) == newContent {
 		fmt.Println("ℹ️  HelloGang was not found in .bashrc.")
