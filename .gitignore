@@ -1,0 +1,12 @@
+# Binaries
+*.exe
+hellogang
+hellogang-*
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

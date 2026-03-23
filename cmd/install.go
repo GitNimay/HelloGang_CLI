@@ -1,10 +1,14 @@
 package cmd
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"hellogang/internal/install"
+	"hellogang/internal/config"
 )
 
 var (
@@ -18,6 +22,17 @@ var installCmd = &cobra.Command{
 	Long: `Installs HelloGang so it runs automatically every time you open
 a new terminal session. Supports PowerShell, CMD, and Git Bash.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		// --- Prompt for Name ---
+		fmt.Print("✨ What is your name? : ")
+		reader := bufio.NewReader(os.Stdin)
+		name, _ := reader.ReadString('\n')
+		name = strings.TrimSpace(name)
+		if name != "" {
+			if err := config.SetName(name); err != nil {
+				fmt.Printf("⚠️  Could not save name to config: %v\n", err)
+			}
+		}
+
 		var shell install.ShellType
 
 		switch installShell {

@@ -4,6 +4,7 @@ go 1.25.2
 
 require (
 	github.com/charmbracelet/lipgloss v1.1.0
+	github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be
 	github.com/shirou/gopsutil/v3 v3.24.5
 	github.com/spf13/cobra v1.10.2
 	golang.org/x/sys v0.38.0

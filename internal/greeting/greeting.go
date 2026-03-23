@@ -5,6 +5,8 @@ import (
 	"strings"
 
 	"github.com/charmbracelet/lipgloss"
+	"github.com/common-nighthawk/go-figure"
+	"hellogang/internal/config"
 	"hellogang/internal/stats"
 )
 
@@ -13,11 +15,6 @@ var (
 	// Claude Orange HEX color
 	orange = lipgloss.Color("#DE5B38")
 	white = lipgloss.Color("#FAFAFA")
-
-	asciiArtStyle = lipgloss.NewStyle().
-		Foreground(orange).
-		Bold(true).
-		Margin(1, 0, 0, 2)
 
 	boxStyle = lipgloss.NewStyle().
 		Border(lipgloss.RoundedBorder()).
@@ -39,14 +36,6 @@ var (
 		Foreground(orange) // Changed to Foreground for solid text blocks
 )
 
-const asciiArt = `
-    ___ ___ .___   _______  .___   _____      _____ _____.___.           ._._.
-   /   |   \|   |  \      \ |   | /     \    /  _  \\__  |   |           | | |
-  /    ~    \   |  /   |   \|   |/  \ /  \  /  /_\  \/   |   |           | | |
-  \    Y    /   | /    |    \   /    Y    \/    |    \____   |            \|\|
-   \___|_  /|___| \____|__  /___\____|__  /\____|__  / ______| /\  /\  /\ ____
-         \/               \/            \/         \/\/        \/  \/  \/ \/\/`
-
 // Run executes the CLI
 func Run() error {
 	// Fetch system stats instantly (no blocking)
@@ -57,6 +46,14 @@ func Run() error {
 	}
 
 	var b strings.Builder
+
+	// Get username from config
+	name := config.GetName()
+	greetingText := fmt.Sprintf("HI %s!!!", name)
+
+	// Dynamically generate Graffiti ASCII art
+	myFigure := figure.NewFigure(greetingText, "graffiti", true)
+	asciiArt := myFigure.String()
 
 	// Add ASCII Art with raw ANSI "Claude Orange" to escape Lipgloss multi-line bugs on Windows
 	b.WriteString("\x1b[38;2;222;91;56m\x1b[1m" + asciiArt + "\x1b[0m")
