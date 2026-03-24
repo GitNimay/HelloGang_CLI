@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"os/user"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -22,16 +23,46 @@ var installCmd = &cobra.Command{
 	Long: `Installs HelloGang so it runs automatically every time you open
 a new terminal session. Supports PowerShell, CMD, and Git Bash.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		// --- Prompt for Name ---
-		fmt.Print("✨ What is your name? : ")
+		// --- Auto-detect Name ---
+		var defaultName string
+		if currentUser, err := user.Current(); err == nil {
+			defaultName = currentUser.Name
+			if defaultName == "" {
+				defaultName = currentUser.Username
+			}
+			// Get first name if there's a space
+			if idx := strings.Index(defaultName, " "); idx != -1 {
+				defaultName = defaultName[:idx]
+			}
+            // Strip domain from username if any (e.g., DOMAIN\\user)
+			if idx := strings.Index(defaultName, "\\"); idx != -1 {
+				defaultName = defaultName[idx+1:]
+			}
+		}
+		if defaultName == "" {
+			defaultName = os.Getenv("USERNAME")
+			if defaultName == "" {
+				defaultName = "User"
+			}
+		}
+
+		name := defaultName
+
+		fmt.Printf("✨ What is your name? [%s]: ", defaultName)
 		reader := bufio.NewReader(os.Stdin)
-		name, _ := reader.ReadString('\n')
-		name = strings.TrimSpace(name)
+		input, _ := reader.ReadString('\n')
+		input = strings.TrimSpace(input)
+		if input != "" {
+			name = input
+		}
+
 		if name != "" {
 			if err := config.SetName(name); err != nil {
 				fmt.Printf("⚠️  Could not save name to config: %v\n", err)
 			}
 		}
+
+		fmt.Printf("👋 Hello %s! Automatically configuring HelloGang for your terminal...\n", name)
 
 		var shell install.ShellType
 

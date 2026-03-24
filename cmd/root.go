@@ -3,7 +3,10 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"runtime"
+	"time"
 
+	"github.com/inconshreveable/mousetrap"
 	"github.com/spf13/cobra"
 	"hellogang/internal/greeting"
 )
@@ -16,6 +19,17 @@ welcome screen along with real-time system statistics (CPU, RAM, date/time).
 
 Run it without any sub-commands to launch the interactive TUI.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		if runtime.GOOS == "windows" && mousetrap.StartedByExplorer() {
+			fmt.Println("✨ Double-click detected! Starting the installation...")
+			// Call the install command instead of normal run
+			if err := installCmd.RunE(installCmd, args); err != nil {
+				return err
+			}
+			// Pause so the user can read the message before closing
+			fmt.Println("\nThis window will close in 3 seconds...")
+			time.Sleep(3 * time.Second)
+			return nil
+		}
 		return greeting.Run()
 	},
 }
@@ -26,6 +40,9 @@ func Execute() error {
 }
 
 func init() {
+	// Disable default Cobra double-click prompt so we can handle it
+	cobra.MousetrapHelpText = ""
+
 	// Global flags can be added here
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
 
