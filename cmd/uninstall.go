@@ -1,7 +1,11 @@
 package cmd
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"runtime"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"hellogang/internal/install"
@@ -35,9 +39,25 @@ This undoes what the 'install' command set up.`,
 			return fmt.Errorf("unknown shell type: %s (use: powershell, cmd, bash, or auto)", uninstallShell)
 		}
 
-		return install.Uninstall(install.InstallOptions{
+		if err := install.Uninstall(install.InstallOptions{
 			Shell: shell,
-		})
+		}); err != nil {
+			return err
+		}
+
+		if runtime.GOOS == "windows" {
+			reader := bufio.NewReader(os.Stdin)
+			fmt.Print("\nWould you also like to remove HelloGang from Windows startup? [y/N]: ")
+			input, _ := reader.ReadString('\n')
+			input = strings.TrimSpace(strings.ToLower(input))
+			if input == "y" || input == "yes" {
+				if err := install.UninstallStartupApp(install.InstallOptions{}); err != nil {
+					fmt.Printf("⚠️  Could not remove from startup: %v\n", err)
+				}
+			}
+		}
+
+		return nil
 	},
 }
 

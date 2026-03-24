@@ -32,6 +32,14 @@ cd cli-app
 go install .
 ```
 
+### 3. Build for Windows (with manifest for SmartScreen)
+For Windows users who want to minimize SmartScreen warnings:
+```bash
+# Build with manifest embedding (requires rsrc tool)
+go generate
+go build -ldflags="-s -w" -o hellogang.exe .
+```
+
 ## 🛠 Usage
 Test the application instantly by running:
 ```bash

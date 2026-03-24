@@ -5,11 +5,12 @@ import (
 	"fmt"
 	"os"
 	"os/user"
+	"runtime"
 	"strings"
 
 	"github.com/spf13/cobra"
-	"hellogang/internal/install"
 	"hellogang/internal/config"
+	"hellogang/internal/install"
 )
 
 var (
@@ -34,7 +35,7 @@ a new terminal session. Supports PowerShell, CMD, and Git Bash.`,
 			if idx := strings.Index(defaultName, " "); idx != -1 {
 				defaultName = defaultName[:idx]
 			}
-            // Strip domain from username if any (e.g., DOMAIN\\user)
+			// Strip domain from username if any (e.g., DOMAIN\\user)
 			if idx := strings.Index(defaultName, "\\"); idx != -1 {
 				defaultName = defaultName[idx+1:]
 			}
@@ -82,10 +83,28 @@ a new terminal session. Supports PowerShell, CMD, and Git Bash.`,
 			return fmt.Errorf("unknown shell type: %s (use: powershell, cmd, bash, or auto)", installShell)
 		}
 
-		return install.Install(install.InstallOptions{
+		if err := install.Install(install.InstallOptions{
 			Shell: shell,
 			Force: installForce,
-		})
+		}); err != nil {
+			return err
+		}
+
+		if runtime.GOOS == "windows" {
+			fmt.Print("\nWould you like to run HelloGang as a startup application? [y/N]: ")
+			input, _ := reader.ReadString('\n')
+			input = strings.TrimSpace(strings.ToLower(input))
+			if input == "y" || input == "yes" {
+				if err := install.InstallStartupApp(install.InstallOptions{
+					Force: installForce,
+				}); err != nil {
+					fmt.Printf("⚠️  Could not add to startup: %v\n", err)
+				}
+			}
+		}
+
+		fmt.Println("\n🎉 Installation complete! Open a new terminal to see HelloGang.")
+		return nil
 	},
 }
 
