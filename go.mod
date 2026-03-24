@@ -8,7 +8,7 @@ require (
 	github.com/inconshreveable/mousetrap v1.1.0
 	github.com/shirou/gopsutil/v3 v3.24.5
 	github.com/spf13/cobra v1.10.2
-	golang.org/x/sys v0.38.0
+	golang.org/x/sys v0.42.0
 )
 
 require (
@@ -34,4 +34,5 @@ require (
 	github.com/tklauser/numcpus v0.6.1 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
 	github.com/yusufpapurcu/wmi v1.2.4 // indirect
+	golang.org/x/term v0.41.0 // indirect
 )
